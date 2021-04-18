@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/stianeikeland/go-rpio"
 	"net"
 	"strconv"
 	"strings"
@@ -10,7 +11,7 @@ import (
 )
 
 var (
-	gpioMap = map[string]int{"front": 0, "back_pool": 1, "back_shed": 2}
+	gpioMap = map[string]int{"front": 14, "back_pool": 15, "back_shed": 18}
 	running = false
 	timer   = time.NewTimer(0)
 )
@@ -31,11 +32,21 @@ func decode(netData string) ([]string, []int) {
 }
 
 func digitalWrite(key string, state bool) {
+	pin := rpio.Pin(gpioMap[key])
+
+	err := rpio.Open()
+	handleError(err)
+	defer rpio.Close()
+
+	pin.Output()
+
 	if state {
 		fmt.Printf("HIGH %v\n", gpioMap[key])
-		return
+		pin.High()
+	} else {
+		fmt.Printf("LOW %v\n", gpioMap[key])
+		pin.Low()
 	}
-	fmt.Printf("LOW %v\n", gpioMap[key])
 }
 
 func allOff(keys []string) {

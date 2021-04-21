@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="3a210129-99fc-4bcf-bae6-981e28b739cd" name="raspberrypi">
-        <fileTransfer rootFolder="/home/aquarel" accessType="SFTP" host="10.0.0.250" port="22" sshConfigId="22be272a-9f1d-44d5-9ee4-3983f923e74b" sshConfig="aquarel@10.0.0.250:22 key" keyPair="true">
+        <fileTransfer rootFolder="/home/pi" accessType="SFTP" host="10.0.0.250" port="22" sshConfigId="22be272a-9f1d-44d5-9ee4-3983f923e74b" sshConfig="pi@10.0.0.250:22 key" keyPair="true">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>

@@ -41,10 +41,10 @@ func digitalWrite(key string, state bool) {
 	pin.Output()
 
 	if state {
-		fmt.Printf("HIGH %v\n", gpioMap[key])
+		//fmt.Printf("HIGH %v\n", gpioMap[key])
 		pin.High()
 	} else {
-		fmt.Printf("LOW %v\n", gpioMap[key])
+		//fmt.Printf("LOW %v\n", gpioMap[key])
 		pin.Low()
 	}
 }

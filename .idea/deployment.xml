@@ -5,7 +5,7 @@
       <paths name="raspberrypi">
         <serverdata>
           <mappings>
-            <mapping deploy="/go/IrrigationSystemServer" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/go/src/IrrigationSystemServer" local="$PROJECT_DIR$/" web="/" />
           </mappings>
         </serverdata>
       </paths>

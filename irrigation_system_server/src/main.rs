@@ -1,18 +1,19 @@
-#[cfg(test)] mod tests;
+#[cfg(test)]
+mod tests;
 
-#[macro_use] extern crate rocket;
+#[macro_use]
+extern crate rocket;
 
 #[derive(FromForm)]
 struct Routine {
-    routine: Vec<Zone>
+    routine: Vec<Zone>,
 }
-
 
 #[derive(FromForm)]
 struct Zone {
     zone: Zones,
     #[field(validate = range(..3600))]
-    duration: u16
+    duration: u16,
 }
 
 #[derive(FromFormField)]
@@ -35,15 +36,18 @@ fn run(routine: Option<Routine>) -> String {
                 response.push_str("Zones number is not three\n");
             }
 
-            let all_zones   = (1 << Zones::Front as u8)
-            | (1 << Zones::BackShed as u8)
-            | (1 << Zones::BackPool as u8);
-    
+            let all_zones = (1 << Zones::Front as u8)
+                | (1 << Zones::BackShed as u8)
+                | (1 << Zones::BackPool as u8);
+
             let mut vec_mask = 0;
 
             for zone in _routine.routine {
                 let zone_code = zone.zone as u8;
-                response.push_str(&format!("Zone: {}, Duration: {}\n", zone_code, zone.duration));
+                response.push_str(&format!(
+                    "Zone: {}, Duration: {}\n",
+                    zone_code, zone.duration
+                ));
                 vec_mask |= 1 << zone_code;
             }
 
@@ -53,7 +57,7 @@ fn run(routine: Option<Routine>) -> String {
                 response.push_str("\n");
             }
         }
-        None => response.push_str("Malformed request")
+        None => response.push_str("Malformed request"),
     }
 
     response
@@ -77,9 +81,8 @@ fn stop() -> String {
     response
 }
 
-
+use rocket::fs::{relative, FileServer};
 use rocket::response::Redirect;
-use rocket::fs::{FileServer, relative};
 
 #[get("/")]
 fn index() -> Redirect {
@@ -89,9 +92,8 @@ fn index() -> Redirect {
 #[launch]
 fn rocket() -> _ {
     rocket::build()
-    .mount("/routine", routes![stop, status])
-    .mount("/routine/run", routes![run])
-
-    .mount("/", routes![index])
-    .mount("/prod/", FileServer::from(relative!("static")))
+        .mount("/routine", routes![stop, status])
+        .mount("/routine/run", routes![run])
+        .mount("/", routes![index])
+        .mount("/prod/", FileServer::from(relative!("static")))
 }

@@ -14,19 +14,25 @@ fn run() {
 
     uri.push_str("/routine/run/?");
     for i in 0..zones.len() {
-        uri.push_str(&format!("routine[{}]zone={}&routine[{}]duration=10&", i, zones[i], i));
+        uri.push_str(&format!(
+            "routine[{}]zone={}&routine[{}]duration=10&",
+            i, zones[i], i
+        ));
         expected.push_str(&format!("Zone: {i}, Duration: 10\n"));
     }
 
     let response = client.get(uri.clone()).dispatch();
     assert_eq!(response.into_string(), Some(expected.clone()));
-    
+
     uri.clear();
     expected.clear();
 
     uri.push_str("/routine/run/?");
     for i in 0..zones.len() {
-        uri.push_str(&format!("routine[{}]zone={}&routine[{}]duration=-1&", i, zones[i], i));
+        uri.push_str(&format!(
+            "routine[{}]zone={}&routine[{}]duration=-1&",
+            i, zones[i], i
+        ));
     }
     expected.push_str("Malformed request");
 
@@ -38,8 +44,11 @@ fn run() {
 
     uri.push_str("/routine/run/?");
     expected.push_str("Zones number is not three\n");
-    for i in 0..(zones.len()-1) {
-        uri.push_str(&format!("routine[{}]zone={}&routine[{}]duration=10&", i, zones[i], i));
+    for i in 0..(zones.len() - 1) {
+        uri.push_str(&format!(
+            "routine[{}]zone={}&routine[{}]duration=10&",
+            i, zones[i], i
+        ));
         expected.push_str(&format!("Zone: {i}, Duration: 10\n"));
     }
     expected.push_str("Missing zones in routine, bitmask: 3\n");
@@ -52,12 +61,16 @@ fn run() {
 fn stop() {
     let client: Client = Client::tracked(super::rocket()).unwrap();
     let response = client.get("/routine/stop").dispatch();
-    assert_eq!(response.into_string(), Some("Stopped current routine".into()));
+    assert_eq!(
+        response.into_string(),
+        Some("Stopped current routine".into())
+    );
 }
 
 #[track_caller]
-fn test_query_file<T> (path: &str, file: T, status: Status)
-    where T: Into<Option<&'static str>>
+fn test_query_file<T>(path: &str, file: T, status: Status)
+where
+    T: Into<Option<&'static str>>,
 {
     let client = Client::tracked(super::rocket()).unwrap();
     let response = client.get(path).dispatch();
@@ -74,7 +87,8 @@ fn read_file_content(path: &str) -> Vec<u8> {
     let mut fp = File::open(&path).expect(&format!("Can't open {}", path));
     let mut file_content = vec![];
 
-    fp.read_to_end(&mut file_content).expect(&format!("Reading {} failed.", path));
+    fp.read_to_end(&mut file_content)
+        .expect(&format!("Reading {} failed.", path));
     file_content
 }
 

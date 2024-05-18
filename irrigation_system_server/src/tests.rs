@@ -8,7 +8,7 @@ fn run() {
     let mut expected = String::new();
     let client: Client = Client::tracked(super::rocket()).unwrap();
 
-    uri.push_str("/run/?");
+    uri.push_str("/routine/run/?");
     for i in 0..zones.len() {
         uri.push_str(&format!("routine[{}]zone={}&routine[{}]duration=10&", i, zones[i], i));
         expected.push_str(&format!("Zone: {i}, Duration: 10\n"));
@@ -20,7 +20,7 @@ fn run() {
     uri.clear();
     expected.clear();
 
-    uri.push_str("/run/?");
+    uri.push_str("/routine/run/?");
     for i in 0..zones.len() {
         uri.push_str(&format!("routine[{}]zone={}&routine[{}]duration=-1&", i, zones[i], i));
     }
@@ -32,7 +32,7 @@ fn run() {
     uri.clear();
     expected.clear();
 
-    uri.push_str("/run/?");
+    uri.push_str("/routine/run/?");
     expected.push_str("Zones number is not three\n");
     for i in 0..(zones.len()-1) {
         uri.push_str(&format!("routine[{}]zone={}&routine[{}]duration=10&", i, zones[i], i));
@@ -47,6 +47,6 @@ fn run() {
 #[test]
 fn stop() {
     let client: Client = Client::tracked(super::rocket()).unwrap();
-    let response = client.get("/stop").dispatch();
+    let response = client.get("/routine/stop").dispatch();
     assert_eq!(response.into_string(), Some("Stopped current routine".into()));
 }

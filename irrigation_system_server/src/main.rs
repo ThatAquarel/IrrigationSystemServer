@@ -2,6 +2,7 @@
 
 #[macro_use] extern crate rocket;
 
+
 #[derive(FromForm)]
 struct Routine {
     routine: Vec<Zone>
@@ -68,9 +69,20 @@ fn stop() -> String {
     response
 }
 
+use rocket::response::Redirect;
+use rocket::fs::{FileServer, relative};
+
+#[get("/")]
+fn index() -> Redirect {
+    Redirect::to(uri!("/prod"))
+}
+
 #[launch]
 fn rocket() -> _ {
     rocket::build()
-        .mount("/run", routes![run])
-        .mount("/stop", routes![stop])
+    .mount("/routine/stop", routes![stop])
+    .mount("/routine/run", routes![run])
+
+    .mount("/", routes![index])
+    .mount("/prod/", FileServer::from(relative!("static")))
 }

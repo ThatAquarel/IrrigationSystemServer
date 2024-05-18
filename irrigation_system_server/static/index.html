@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reorderable Cards with Sliders and Handles</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+</head>
+<body>
+
+<div class="container">    
+    <div id="card-container">
+        <div class="card">
+            <div class="card-handle">&#x2630;</div>
+            <h2 class="zone">Front Yard</h2>
+            <h2 class="time" id="time-f">30 min</h2>
+            <input type="range" min="0" max="12" value="6" class="slider" id="slider-f">
+        </div>
+        
+        <div class="card">
+            <div class="card-handle">&#x2630;</div>
+            <h2 class="zone">Back Yard Pool</h2>
+            <h2 class="time" id="time-bp">30 min</h2>
+            <input type="range" min="0" max="12" value="6" class="slider" id="slider-bp">
+        </div>
+
+        <div class="card">
+            <div class="card-handle">&#x2630;</div>
+            <h2 class="zone">Back Yard Shed</h2>
+            <h2 class="time" id="time-bs">30 min</h2>
+            <input type="range" min="0" max="12" value="6" class="slider" id="slider-bs">
+        </div>
+
+        <div class="buttons">
+            <button id="start-btn">
+                Start
+                <h4>Test</h4>
+            </button>
+            <button id="stop-btn">
+                Stop
+                <h4>Test</h4>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

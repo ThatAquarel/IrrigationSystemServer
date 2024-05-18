@@ -33,3 +33,18 @@ for (const zone of zones) {
 
     slider.oninput();
 }
+
+fetch('/routine/status')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Unable to fetch status');
+        }
+        return response.text();
+    })
+    .then(data => {
+        let stop_label = document.getElementById("stop-label");
+        stop_label.innerHTML = data;
+    })
+    .catch(error => {
+        console.error('Unable to fetch status: ', error);
+    });

@@ -60,7 +60,16 @@ fn run(routine: Option<Routine>) -> String {
     response
 }
 
-#[get("/")]
+#[get("/status")]
+fn status() -> String {
+    let mut response = String::new();
+
+    response.push_str("Status");
+
+    response
+}
+
+#[get("/stop")]
 fn stop() -> String {
     let mut response = String::new();
 
@@ -80,7 +89,7 @@ fn index() -> Redirect {
 #[launch]
 fn rocket() -> _ {
     rocket::build()
-    .mount("/routine/stop", routes![stop])
+    .mount("/routine", routes![stop, status])
     .mount("/routine/run", routes![run])
 
     .mount("/", routes![index])

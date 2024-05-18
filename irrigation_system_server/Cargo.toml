@@ -1,0 +1,6 @@
+[package]
+name = "irrigation_system_server"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]

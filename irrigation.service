@@ -1,0 +1,14 @@
+[Unit]
+Description=Irrigation Service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=pi
+ExecStart=/bin/bash /home/pi/irrigation_server 2>&1 > /dev/null
+
+[Install]
+WantedBy=multi-user.target

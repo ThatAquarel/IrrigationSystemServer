@@ -1,5 +1,12 @@
+use std::sync::{Arc, Mutex};
+
+use once_cell::sync::Lazy;
 use rocket::fs::{relative, FileServer};
 use rocket::response::Redirect;
+use rocket::tokio::sync::oneshot;
+
+static mut ROUTINE_STATUS: Lazy<Arc<Mutex<Option<(oneshot::Sender<u32>, oneshot::Receiver<u32>)>>>> =
+    Lazy::new(|| Arc::new(Mutex::new(None)));
 
 #[cfg(test)]
 mod tests;
@@ -70,7 +77,17 @@ fn run(routine: Option<Routine>) -> String {
 fn status() -> String {
     let mut response = String::new();
 
-    response.push_str("Status");
+    unsafe {
+        let routine_status = Arc::clone(&ROUTINE_STATUS);
+        let opt = routine_status.lock().unwrap();
+
+        match *opt {
+            Some(_) => {
+                response.push_str("Current operation");}
+            None => {
+                response.push_str("Not currently running");}
+        }
+    }
 
     response
 }

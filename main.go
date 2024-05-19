@@ -139,6 +139,8 @@ func (h spaHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	fmt.Printf(addr)
+
 	router := mux.NewRouter()
 
 	router.HandleFunc("/routine/run", run)

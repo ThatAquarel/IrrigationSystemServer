@@ -80,10 +80,20 @@ body {
 }
 
 .slider {
+  position: relative;
   grid-area: slider;
 
   width: 100%;
   margin-top: 10px;
+}
+
+.slider::before {
+  position: absolute;
+  content: ' ';
+  left: 0;
+  right: 0;
+  top: -20px;
+  bottom: -10px;
 }
 
 .card-handle {

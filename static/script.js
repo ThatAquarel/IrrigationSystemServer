@@ -34,7 +34,14 @@ for (const zone of zones) {
     slider.oninput();
 }
 
-fetch('/routine/status')
+function requestStatus() {
+    updateStatus((response) => {
+        alert(JSON.stringify(response, null, 4));
+    });
+}
+
+function updateStatus(callback) {
+    fetch('/routine/status')
     .then(response => {
         if (!response.ok) {
             throw new Error('Unable to fetch status');
@@ -45,8 +52,10 @@ fetch('/routine/status')
         return response.json();
     })
     .then(response => {
+        callback(response);
+
         if (response.running) {
-            return "Current routine " + response.time;
+            return "Current routine";
         }
         return "No current routine";
     })
@@ -57,27 +66,32 @@ fetch('/routine/status')
     .catch(error => {
         console.error('Unable to fetch status: ', error);
     });
-
-function getQueryParam(name) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(name);
 }
+updateStatus(_=>{});
 
-let response = getQueryParam('response');
-if (response != null) {
-    document.getElementById('response-container').style.display = 'block';
-    document.getElementById('response').value = response;
-}
+let development_mode = false;
 
 function startRoutine(event) {
     const form = event.target;
-    const formData = new FormData(form);
+    let formData = new FormData(form);
+
+    if (!development_mode) {
+        for (const a of formData.keys()) {
+            if (!a.includes("duration")) {
+                continue;
+            }
+    
+            let duration = 300 * Number(formData.get(a));
+            formData.set(a, duration.toString());   
+        }
+    }
+
     const params = new URLSearchParams(formData).toString();
 
     fetch(`/routine/run?${params}`)
     .then(response => response.json())
     .then(data => {
-        alert(JSON.stringify(data));
+        alert(JSON.stringify(data, null, 4));
     });
 }
 
@@ -85,6 +99,11 @@ function stopRoutine(event) {
     fetch(`/routine/stop`)
     .then(response => response.json())
     .then(data => {
-        alert(JSON.stringify(data));
+        alert(JSON.stringify(data, null, 4));
     });
+}
+
+function developmentMode(event) {
+    const checkbox = event.target;
+    development_mode = checkbox.checked;
 }

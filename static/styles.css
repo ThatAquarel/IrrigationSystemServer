@@ -1,6 +1,11 @@
 body {
     font-family: 'Trebuchet MS', sans-serif;
+    margin: 0;
+}
+
+.flex-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -21,6 +26,20 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+.title-container {
+    display: flex;
+    align-items: center;
+    margin: 0 10px 0 10px;
+}
+
+.img {
+    height: 40px;
+}
+
+.title {
+    margin: 15px 0 15px auto;
 }
 
 .card {
@@ -44,12 +63,14 @@ body {
 .zone {
     grid-area: header;
 
+    margin: 0;
     font-weight: bold;
 }
 
 .time {
     grid-area: time;
 
+    margin: 0;
     font-weight: lighter;
 }
 
@@ -97,11 +118,11 @@ body {
     flex: 1
 }
 
-button > h3,h4 {
+button > h4,h5 {
     margin: 0;
 }
 
-button h4 {
+button h5 {
     font-weight: lighter;
 }
 
@@ -113,7 +134,9 @@ button h4 {
     display: none;
 }
 
-.response-box {
+.test-container {
+    display: flex;
+
     width: 100%;
     border: 0;
 
@@ -122,6 +145,7 @@ button h4 {
     box-sizing: border-box;
 }
 
-#response-container {
-    display: none;
+.request-status {
+    margin-left: auto;
+    fill: none;
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -95,7 +96,11 @@ func parseQuery(m Routine, query string) (err error) {
 func run(w http.ResponseWriter, r *http.Request) {
 	routine, err := ParseQuery(r.URL.RawQuery)
 	if err == nil {
-		go runRoutine(routine)
+		if !running {
+			go runRoutine(routine)
+		} else {
+			err = errors.New("task already started")
+		}
 	}
 
 	json.NewEncoder(w).Encode(fmtResp("run", err))

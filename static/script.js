@@ -68,3 +68,23 @@ if (response != null) {
     document.getElementById('response-container').style.display = 'block';
     document.getElementById('response').value = response;
 }
+
+function startRoutine(event) {
+    const form = event.target;
+    const formData = new FormData(form);
+    const params = new URLSearchParams(formData).toString();
+
+    fetch(`/routine/run?${params}`)
+    .then(response => response.json())
+    .then(data => {
+        alert(JSON.stringify(data));
+    });
+}
+
+function stopRoutine(event) {
+    fetch(`/routine/stop`)
+    .then(response => response.json())
+    .then(data => {
+        alert(JSON.stringify(data));
+    });
+}

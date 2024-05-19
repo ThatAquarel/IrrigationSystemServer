@@ -11,7 +11,7 @@
 <body>
 
 <div class="container">    
-    <form action="/routine/run" method="get" id="card-container">
+    <form onsubmit="startRoutine(event)" method="get" id="card-container">
         <div class="card">
             <div class="card-handle">&#x2630;</div>
             <h2 class="zone">Front Yard</h2>
@@ -41,7 +41,7 @@
                 <h3>Start</h3>
                 <h4 id="start-label">Test</h4>
             </button>
-            <button type="submit" formaction="/routine/stop" id="stop-btn">
+            <button type="button" onclick="stopRoutine(event)" id="stop-btn">
                 <h3>Stop</h3>
                 <h4 id="stop-label">Test</h4>
             </button>

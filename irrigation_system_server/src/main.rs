@@ -3,9 +3,10 @@ use std::sync::{Arc, Mutex};
 use once_cell::sync::Lazy;
 use rocket::fs::{relative, FileServer};
 use rocket::response::Redirect;
-use rocket::tokio::sync::oneshot;
+use rocket::tokio::sync::mpsc;
+use rocket::tokio;
 
-static mut ROUTINE_STATUS: Lazy<Arc<Mutex<Option<(oneshot::Sender<u32>, oneshot::Receiver<u32>)>>>> =
+static ROUTINE_STATUS: Lazy<Arc<Mutex<Option<(mpsc::Sender<u32>, mpsc::Receiver<u32>)>>>> =
     Lazy::new(|| Arc::new(Mutex::new(None)));
 
 #[cfg(test)]
@@ -77,15 +78,17 @@ fn run(routine: Option<Routine>) -> String {
 fn status() -> String {
     let mut response = String::new();
 
-    unsafe {
+    {
         let routine_status = Arc::clone(&ROUTINE_STATUS);
         let opt = routine_status.lock().unwrap();
 
         match *opt {
             Some(_) => {
-                response.push_str("Current operation");}
+                response.push_str("Current operation");
+            }
             None => {
-                response.push_str("Not currently running");}
+                response.push_str("Not currently running");
+            }
         }
     }
 
@@ -96,7 +99,22 @@ fn status() -> String {
 fn stop() -> String {
     let mut response = String::new();
 
-    response.push_str("Stopped current routine");
+    {
+        let routine_status = Arc::clone(&ROUTINE_STATUS);
+        let opt = routine_status.lock().unwrap();
+
+        match &*opt {
+            Some((tx, _)) => {
+                tokio::spawn(async move {
+                    tx.send(0).await;
+                });
+                response.push_str("Stopped current routine");
+            }
+            None => {
+                response.push_str("No routine to be stopped");
+            }
+        }
+    }
 
     response
 }

@@ -1,70 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Irrigation System Server</title>
-    <link rel="icon" type="image/x-icon" href="icon.png">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="icon.png" />
+    <link rel="stylesheet" href="styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
-</head>
-<body>
- 
+  </head>
+  <body>
     <div class="title-container">
-        <img class="img" src="icon.png">
-        <h2 class="title">Irrigation System Server</h2>
+      <img class="img" src="icon.png" />
+      <h2 class="title">Irrigation System Server</h2>
     </div>
 
     <div class="flex-container">
-<div class="container">       
-
-    <form onsubmit="startRoutine(event)" method="get" id="card-container">
-        <div class="card">
+      <div class="container">
+        <form onsubmit="startRoutine(event)" method="get" id="card-container">
+          <div class="card">
             <div class="card-handle">&#x2630;</div>
             <h3 class="zone">Front Yard</h3>
             <h3 class="time" id="time-f">30 min</h3>
-            <input type="text" name="routine[f][zone]" value="f" class="routine-zone">
-            <input type="range" name="routine[f][duration]" min="0" max="12" value="6" class="slider" id="slider-f">
-        </div>
-        
-        <div class="card">
+            <input
+              type="text"
+              name="routine[f][zone]"
+              value="f"
+              class="routine-zone"
+            />
+            <input
+              type="range"
+              name="routine[f][duration]"
+              min="0"
+              max="12"
+              value="6"
+              class="slider"
+              id="slider-f"
+            />
+          </div>
+
+          <div class="card">
             <div class="card-handle">&#x2630;</div>
             <h3 class="zone">Back Yard Pool</h3>
             <h3 class="time" id="time-bp">30 min</h3>
-            <input type="text" name="routine[bp][zone]", value="bp" class="routine-zone">
-            <input type="range" name="routine[bp][duration]" min="0" max="12" value="6" class="slider" id="slider-bp">
-        </div>
+            <input
+              type="text"
+              name="routine[bp][zone]"
+              ,
+              value="bp"
+              class="routine-zone"
+            />
+            <input
+              type="range"
+              name="routine[bp][duration]"
+              min="0"
+              max="12"
+              value="6"
+              class="slider"
+              id="slider-bp"
+            />
+          </div>
 
-        <div class="card">
+          <div class="card">
             <div class="card-handle">&#x2630;</div>
             <h3 class="zone">Back Yard Shed</h3>
             <h3 class="time" id="time-bs">30 min</h3>
-            <input type="text" name="routine[bs][zone]", value="bs" class="routine-zone">
-            <input type="range" name="routine[bs][duration]" min="0" max="12" value="6" class="slider" id="slider-bs">
-        </div>
+            <input
+              type="text"
+              name="routine[bs][zone]"
+              ,
+              value="bs"
+              class="routine-zone"
+            />
+            <input
+              type="range"
+              name="routine[bs][duration]"
+              min="0"
+              max="12"
+              value="6"
+              class="slider"
+              id="slider-bs"
+            />
+          </div>
 
-        <div class="buttons">
+          <div class="buttons">
             <button type="submit" id="start-btn">
-                <h4>Start</h3>
-                <h5 id="start-label">Test</h4>
+              <h4>Start</h4>
+              <h5 id="start-label">Test</h5>
             </button>
             <button type="button" onclick="stopRoutine(event)" id="stop-btn">
-                <h4>Stop</h3>
-                <h5 id="stop-label">Test</h4>
+              <h4>Stop</h4>
+              <h5 id="stop-label">Test</h5>
             </button>
-        </div>
-    </form>
+          </div>
+        </form>
 
-    <div class="test-container">
-        <input type="checkbox" id="dev-mode" name="dev-mode" value="Boat" onchange="developmentMode(event)">
-            <label for="dev-mode">Development mode</label><br>
-        <button type="button" class="request-status" onclick="requestStatus()">
+        <div class="test-container">
+          <input
+            type="checkbox"
+            id="dev-mode"
+            name="dev-mode"
+            value="Boat"
+            onchange="developmentMode(event)"
+          />
+          <label for="dev-mode">Development mode</label><br />
+          <button
+            type="button"
+            class="request-status"
+            onclick="requestStatus()"
+          >
             <label>Request status</label>
-        </button>
+          </button>
+        </div>
+      </div>
     </div>
-</div>
-</div>
 
-<script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>

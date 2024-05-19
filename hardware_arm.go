@@ -1,4 +1,4 @@
-//go:build armv7l
+//go:build arm
 
 package main
 

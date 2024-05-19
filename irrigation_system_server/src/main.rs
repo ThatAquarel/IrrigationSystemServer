@@ -1,3 +1,6 @@
+use rocket::fs::{relative, FileServer};
+use rocket::response::Redirect;
+
 #[cfg(test)]
 mod tests;
 
@@ -80,9 +83,6 @@ fn stop() -> String {
 
     response
 }
-
-use rocket::fs::{relative, FileServer};
-use rocket::response::Redirect;
 
 #[get("/")]
 fn index() -> Redirect {

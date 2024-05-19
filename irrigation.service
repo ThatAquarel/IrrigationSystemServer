@@ -7,8 +7,8 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec=1
-User=pi
-ExecStart=/bin/bash /home/pi/irrigation_server 2>&1 > /dev/null
+WorkingDirectory=/home/pi/IrrigationSystemServer/
+ExecStart=/home/pi/IrrigationSystemServer/irrigationsystemserver 2>&1 > /dev/null
 
 [Install]
 WantedBy=multi-user.target

@@ -39,7 +39,16 @@ fetch('/routine/status')
         if (!response.ok) {
             throw new Error('Unable to fetch status');
         }
-        return response.text();
+        return response;
+    })
+    .then(response => {
+        return response.json();
+    })
+    .then(response => {
+        if (response.running) {
+            return "Current routine " + response.time;
+        }
+        return "No current routine";
     })
     .then(data => {
         let stop_label = document.getElementById("stop-label");

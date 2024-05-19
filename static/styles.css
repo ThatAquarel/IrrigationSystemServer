@@ -128,7 +128,7 @@ h5 {
   margin: 0;
 }
 
-button h5 {
+.button-text {
   font-weight: lighter;
 }
 

@@ -112,3 +112,16 @@ button h4 {
 .routine-zone {
     display: none;
 }
+
+.response-box {
+    width: 100%;
+    border: 0;
+
+    margin: 0;
+    margin-top: 32px;
+    box-sizing: border-box;
+}
+
+#response-container {
+    display: none;
+}

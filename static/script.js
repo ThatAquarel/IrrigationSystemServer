@@ -57,3 +57,14 @@ fetch('/routine/status')
     .catch(error => {
         console.error('Unable to fetch status: ', error);
     });
+
+function getQueryParam(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
+let response = getQueryParam('response');
+if (response != null) {
+    document.getElementById('response-container').style.display = 'block';
+    document.getElementById('response').value = response;
+}

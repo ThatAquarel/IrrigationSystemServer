@@ -11,39 +11,42 @@
 <body>
 
 <div class="container">    
-    <div id="card-container">
+    <form action="/routine/run" method="get" id="card-container">
         <div class="card">
             <div class="card-handle">&#x2630;</div>
             <h2 class="zone">Front Yard</h2>
             <h2 class="time" id="time-f">30 min</h2>
-            <input type="range" min="0" max="12" value="6" class="slider" id="slider-f">
+            <input type="text" name="routine[f][zone]" value="f" class="routine-zone">
+            <input type="range" name="routine[f][duration]" min="0" max="12" value="6" class="slider" id="slider-f">
         </div>
         
         <div class="card">
             <div class="card-handle">&#x2630;</div>
             <h2 class="zone">Back Yard Pool</h2>
             <h2 class="time" id="time-bp">30 min</h2>
-            <input type="range" min="0" max="12" value="6" class="slider" id="slider-bp">
+            <input type="text" name="routine[bp][zone]", value="bp" class="routine-zone">
+            <input type="range" name="routine[bp][duration]" min="0" max="12" value="6" class="slider" id="slider-bp">
         </div>
 
         <div class="card">
             <div class="card-handle">&#x2630;</div>
             <h2 class="zone">Back Yard Shed</h2>
             <h2 class="time" id="time-bs">30 min</h2>
-            <input type="range" min="0" max="12" value="6" class="slider" id="slider-bs">
+            <input type="text" name="routine[bs][zone]", value="bs" class="routine-zone">
+            <input type="range" name="routine[bs][duration]" min="0" max="12" value="6" class="slider" id="slider-bs">
         </div>
 
         <div class="buttons">
-            <button id="start-btn">
+            <button type="submit" id="start-btn">
                 <h3>Start</h3>
                 <h4 id="start-label">Test</h4>
             </button>
-            <button id="stop-btn">
+            <button type="button" id="stop-btn">
                 <h3>Stop</h3>
                 <h4 id="stop-label">Test</h4>
             </button>
         </div>
-    </div>
+    </form>
 </div>
 
 <script src="prod/script.js"></script>

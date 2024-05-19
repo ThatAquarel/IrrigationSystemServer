@@ -9,12 +9,13 @@ var (
 	hardware_error = false
 )
 
+type Routine []Zone
 type Zone struct {
 	zone     string
 	duration int
 }
 
-func runRoutine(zones []Zone) {
+func runRoutine(zones Routine) {
 	running = true
 	defer stopRoutine()
 
@@ -22,10 +23,7 @@ func runRoutine(zones []Zone) {
 		var err error
 		err = allOff()
 		err = setPin(gpioMap[zone.zone], true)
-
-		if err != nil {
-			hardware_error = true
-		}
+		hardware_error = err != nil
 
 		timerCurrent := time.NewTimer(time.Duration(zone.duration) * time.Second)
 		timer = timerCurrent

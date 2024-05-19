@@ -1,0 +1,114 @@
+body {
+    font-family: 'Trebuchet MS', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+.container {
+    width: 80%;
+    max-width: 800px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.card {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    display: grid;
+    grid-template-areas:
+    'handle header time'
+    'handle slider slider';
+
+    grid-template-columns: fit-content(15%) 1fr;
+}
+
+.card h2 {
+    margin-top: 0;
+}
+
+.zone {
+    grid-area: header;
+
+    font-weight: bold;
+}
+
+.time {
+    grid-area: time;
+
+    font-weight: lighter;
+}
+
+.slider {
+    grid-area: slider;
+
+    width: 100%;
+    margin-top: 10px;
+}
+
+.card-handle {
+    grid-area: handle;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    cursor: grab;
+    font-size: 32px;
+    width: 48px;
+
+    line-height: 20px;
+    margin-right: 10px;
+    user-select: none;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    width: 100%;
+
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.buttons button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    flex: 1
+}
+
+button > h3,h4 {
+    margin: 0;
+}
+
+button h4 {
+    font-weight: lighter;
+}
+
+.buttons button:hover {
+    background-color: #0056b3;
+}
+
+.routine-zone {
+    display: none;
+}

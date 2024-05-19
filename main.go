@@ -1,117 +1,70 @@
 package main
 
 import (
-	"bufio"
-	"fmt"
-	"net"
-	"strconv"
-	"strings"
+	"encoding/json"
+	"log"
+	"net/http"
+	"os"
+	"path/filepath"
 	"time"
+
+	"github.com/gorilla/mux"
 )
 
-var (
-	gpioMap = map[string]int{"front": 0, "back_pool": 1, "back_shed": 2}
-	running = false
-	timer   = time.NewTimer(0)
-)
-
-func decode(netData string) ([]string, []int) {
-	keys := make([]string, 3, 3)
-	values := make([]int, 3, 3)
-
-	elements := strings.Split(netData, ",")
-
-	for i := 0; i < 3; i++ {
-		element := strings.Split(elements[i], "=")
-		keys[i] = element[0]
-		values[i], _ = strconv.Atoi(element[1])
-	}
-
-	return keys, values
+// spaHandler implements the http.Handler interface, so we can use it
+// to respond to HTTP requests. The path to the static directory and
+// path to the index file within that static directory are used to
+// serve the SPA in the given static directory.
+type spaHandler struct {
+	staticPath string
+	indexPath  string
 }
 
-func digitalWrite(key string, state bool) {
-	if state {
-		fmt.Printf("HIGH %v\n", gpioMap[key])
+// ServeHTTP inspects the URL path to locate a file within the static dir
+// on the SPA handler. If a file is found, it will be served. If not, the
+// file located at the index path on the SPA handler will be served. This
+// is suitable behavior for serving an SPA (single page application).
+func (h spaHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	// Join internally call path.Clean to prevent directory traversal
+	path := filepath.Join(h.staticPath, r.URL.Path)
+
+	// check whether a file exists or is a directory at the given path
+	fi, err := os.Stat(path)
+	if os.IsNotExist(err) || fi.IsDir() {
+		// file does not exist or path is a directory, serve index.html
+		http.ServeFile(w, r, filepath.Join(h.staticPath, h.indexPath))
 		return
 	}
-	fmt.Printf("LOW %v\n", gpioMap[key])
-}
 
-func allOff(keys []string) {
-	for _, key := range keys {
-		digitalWrite(key, false)
-	}
-}
-
-func handleError(err error) {
 	if err != nil {
-		return
-	}
-}
-
-func handleStopRoutine(keys []string) {
-	allOff(keys)
-	timer.Stop()
-	running = false
-}
-
-func handleRoutines(keys []string, values []int) {
-	running = true
-	for i := 0; i < 3; i++ {
-		allOff(keys)
-		digitalWrite(keys[i], true)
-
-		timerCurrent := time.NewTimer(time.Duration(values[i]) * time.Second)
-		timer = timerCurrent
-		<-timerCurrent.C
-
-		if !running {
-			break
-		}
-	}
-	allOff(keys)
-	running = false
-}
-
-func handleConnection(c net.Conn) {
-	netData, _ := bufio.NewReader(c).ReadString('\n')
-	netData = strings.ReplaceAll(netData, "\n", "")
-	if netData == "" {
+		// if we got an error (that wasn't that the file doesn't exist) stating the
+		// file, return a 500 internal server error and stop
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	keys, values := decode(netData)
-
-	response := fmt.Sprintf("%v %v %s\n", time.Now().Format(time.RFC3339), c.RemoteAddr(), netData)
-	fmt.Print(response)
-
-	if !running {
-		go handleRoutines(keys, values)
-	} else {
-		netData += " Stop Routine"
-		handleStopRoutine(keys)
-	}
-
-	_, err := c.Write([]byte(response))
-	handleError(err)
-
-	err = c.Close()
-	handleError(err)
+	// otherwise, use http.FileServer to serve the static file
+	http.FileServer(http.Dir(h.staticPath)).ServeHTTP(w, r)
 }
 
 func main() {
-	l, err := net.Listen("tcp4", ":6969")
-	handleError(err)
+	router := mux.NewRouter()
 
-	defer func(l net.Listener) {
-		err := l.Close()
-		handleError(err)
-	}(l)
+	router.HandleFunc("/api/health", func(w http.ResponseWriter, r *http.Request) {
+		// an example API handler
+		json.NewEncoder(w).Encode(map[string]bool{"ok": true})
+	})
 
-	for {
-		c, err := l.Accept()
-		handleError(err)
-		go handleConnection(c)
+	spa := spaHandler{staticPath: "static", indexPath: "index.html"}
+	router.PathPrefix("/").Handler(spa)
+
+	srv := &http.Server{
+		Handler: router,
+		Addr:    "127.0.0.1:8000",
+		// Good practice: enforce timeouts for servers you create!
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
 	}
+
+	log.Fatal(srv.ListenAndServe())
 }

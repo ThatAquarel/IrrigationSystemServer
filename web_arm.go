@@ -2,4 +2,4 @@
 
 package main
 
-const addr = "127.0.0.1:80"
+const addr = "0.0.0.0:80"
